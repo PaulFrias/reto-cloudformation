@@ -1,0 +1,81 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: EC2 para entornos DEV y PDN
+
+Parameters:
+  NetworkUser:
+    Type: String
+    Description: Nombre del usuario de red
+    Default: pfrias
+  PrivateSubnetAZ1Id:
+    Type: AWS::EC2::Subnet::Id
+    Description: ID de la subnet privada en AZ1
+  PrivateSubnetAZ2Id:
+    Type: AWS::EC2::Subnet::Id
+    Description: ID de la subnet privada en AZ2
+
+Resources:
+  EC2DEV:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-0c2b8ca1dad447f8a
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: true
+          DeviceIndex: 0
+          GroupSet:
+          - !ImportValue
+            Fn::Sub: LDC-AUTH-SG-${NetworkUser}-DEV
+          SubnetId:
+            Ref: PrivateSubnetAZ2Id
+      Tags:
+        - Key: Name
+          Value: !Sub LDC-AUTH-EC2-${NetworkUser}-DEV
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          exec > /var/log/user-data.log 2>&1
+          apt-get update -y
+          apt-get install -y docker.io git
+          systemctl enable docker
+          systemctl start docker
+          git clone https://github.com/nastab/cloudformation-challenge.git
+          cd cloudformation-challenge/
+          docker compose up -d
+
+  EC2PDN:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-0c2b8ca1dad447f8a
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: true
+          DeviceIndex: 0
+          GroupSet:
+          - !ImportValue
+            Fn::Sub: LDC-AUTH-SG-${NetworkUser}-PDN
+          SubnetId:
+            Ref: PrivateSubnetAZ1Id
+      Tags:
+        - Key: Name
+          Value: !Sub LDC-AUTH-EC2-${NetworkUser}-PDN
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          exec > /var/log/user-data.log 2>&1
+          apt-get update -y
+          apt-get install -y docker.io git
+          systemctl enable docker
+          systemctl start docker
+          git clone https://github.com/nastab/cloudformation-challenge.git
+          cd cloudformation-challenge/
+          docker compose up -d
+
+Outputs:
+  EC2DEV:
+    Value: !Ref EC2DEV
+    Export:
+      Name: !Sub LDC-AUTH-EC2-${NetworkUser}-DEV
+  EC2PDN:
+    Value: !Ref EC2PDN
+    Export:
+      Name: !Sub LDC-AUTH-EC2-${NetworkUser}-PDN
