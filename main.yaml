@@ -62,6 +62,7 @@ Resources:
         NetworkUser: !Ref NetworkUser
         PrivateSubnetAZ1Id: !Ref PrivateSubnetAZ1Id
         PrivateSubnetAZ2Id: !Ref PrivateSubnetAZ2Id
+        ExistingVPCId: !Ref ExistingVPCId    
 
   ALBStack:
     Type: AWS::CloudFormation::Stack
