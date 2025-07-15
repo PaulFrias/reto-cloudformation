@@ -92,4 +92,6 @@ Resources:
 
 Outputs:
   Message:
-    Value: "Infraestructura desplegada para ${NetworkUser}"
+    Value: !Ref NetworkUser
+    Export:
+      Name: !Sub ${NetworkUser}
