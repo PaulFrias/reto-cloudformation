@@ -92,7 +92,7 @@ Resources:
   TargetGroupFrontend:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
-      Name: !Sub tg-frontend-${NetworkUser}
+      Name: !Sub tg-frontend-${NetworkUser}-DEV
       Port: 80
       Protocol: HTTP
       VpcId: !Ref ExistingVPCId
