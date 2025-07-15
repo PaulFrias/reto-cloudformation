@@ -12,6 +12,9 @@ Parameters:
   PrivateSubnetAZ2Id:
     Type: AWS::EC2::Subnet::Id
     Description: ID de la subnet privada en AZ2
+  ExistingVPCId:
+    Type: AWS::EC2::VPC::Id
+    Description: ID de la VPC existente
 
 Resources:
   EC2DEV:
