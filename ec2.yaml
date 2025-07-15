@@ -89,16 +89,7 @@ Resources:
           docker-compose up -d
           echo "=== SCRIPT FINALIZADO ==="
 
-  TargetGroupFrontend:
-    Type: AWS::ElasticLoadBalancingV2::TargetGroup
-    Properties:
-      Name: !Sub tg-frontend-${NetworkUser}-DEV
-      Port: 80
-      Protocol: HTTP
-      VpcId: !Ref ExistingVPCId
-      TargetType: instance
-      Targets:
-        - Id: !Ref EC2DEV
+  
 
 Outputs:
   EC2DEV:

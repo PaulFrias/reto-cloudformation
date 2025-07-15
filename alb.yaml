@@ -97,3 +97,7 @@ Outputs:
     Value: !Ref ALBPDN
     Export:
       Name: !Sub LDC-AUTH-ALB-${NetworkUser}-PDN
+  TargetGroupBackend:
+    Value: !Ref TargetGroupBackend
+    Export:
+      Name: !Sub tg-backend-${NetworkUser}
