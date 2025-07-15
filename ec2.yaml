@@ -98,8 +98,7 @@ Resources:
       VpcId: !Ref ExistingVPCId
       TargetType: instance
       Targets:
-        - Id: !ImportValue
-              Fn::Sub: LDC-AUTH-EC2-${NetworkUser}-DEV
+        - Id: !Ref EC2DEV
 
 Outputs:
   EC2DEV:
