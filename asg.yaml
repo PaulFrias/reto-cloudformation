@@ -27,9 +27,9 @@ Resources:
       LaunchTemplateData:
         InstanceType: t2.micro
         ImageId: ami-0c2b8ca1dad447f8a
-        SubnetId: Ref: PrivateSubnetAZ1Id
-        - !ImportValue
-          Fn::Sub: LDC-AUTH-SG-${NetworkUser}-PDN
+        SecurityGroupIds:
+          - !ImportValue
+            Fn::Sub: LDC-AUTH-SG-${NetworkUser}-PDN
         UserData:
           Fn::Base64: !Sub |
             #!/bin/bash -xe
